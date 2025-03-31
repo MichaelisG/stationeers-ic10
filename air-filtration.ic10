@@ -1,27 +1,48 @@
 alias airSensor d0
 alias airVent d1
-alias wasteVent d2
-alias airTank d3
-alias airMixer d4
-
+alias airTank d2
+alias airMixer d3
+alias oxygenTank d4
+alias nitrogenTank d5
 alias airRoomPressure r0
 alias airTankPressure r1
-
+alias tmp1 r7
+alias tmp1 r8
+alias tmp1 r9
 define maxRoomPressure 50
 define minTankPressure 1000
 define maxTankPressure 8000
 
 init:
 s airVent Mode 0
-s wasteVent Mode 1
 j start
 
 start:
 yield
+jal collectData
+jal mixAir
+jal ventAir
+j start
+
+collectData:
 l airRoomPressure airSensor Pressure
 l airTankPressure airTank Pressure
-slt isAirPressure airRoomPressure maxRoomPressure
-sgt isAirEnough airTankPressure minTankPressure
-and canVent isAirEngouh isAirPressure
+l oxygenPressure oxygemTank Pressure
+l nitrogenPressure nitrogemTank Pressure
+j ra
+
+ventAir:
+slt airPressureKo airRoomPressure maxRoomPressure
+sgt airTankOk airTankPressure minTankPressure
+and canVent aitTankOk airPressureKo
 s airVent On canVent
-j start
+j ra 
+
+mixAir:
+slt tmp1 airTankPressure maxTankPressure
+sgt tmp2 oxygenPressure minTankPressure
+sgt tmp3 nitrogenPressure minTankPressure
+and mixingAir tmp2 tmp3
+and mixingAir mixingAir tmp1
+s airMixer On mixingAir
+j ra
