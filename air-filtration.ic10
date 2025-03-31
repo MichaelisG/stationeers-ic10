@@ -1,0 +1,27 @@
+alias airSensor d0
+alias airVent d1
+alias wasteVent d2
+alias airTank d3
+alias airMixer d4
+
+alias airRoomPressure r0
+alias airTankPressure r1
+
+define maxRoomPressure 50
+define minTankPressure 1000
+define maxTankPressure 8000
+
+init:
+s airVent Mode 0
+s wasteVent Mode 1
+j start
+
+start:
+yield
+l airRoomPressure airSensor Pressure
+l airTankPressure airTank Pressure
+slt isAirPressure airRoomPressure maxRoomPressure
+sgt isAirEnough airTankPressure minTankPressure
+and canVent isAirEngouh isAirPressure
+s airVent On canVent
+j start
