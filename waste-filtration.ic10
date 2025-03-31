@@ -1,0 +1,21 @@
+define filtrationUnits HASH("StructureFiltration")
+define minPressure 1000
+define minTemperature 288
+define maxTemperature 298
+alias analyzer d0
+alias currentPressure r0
+alias pressureOk r1
+alias temperatureMinOk r2
+alias temperatureMaxOk r3
+alias filterWaste r4
+
+start:
+l currentPressure analyzer Pressure
+l currentTemperature analyzer Temperature
+sgt pressureOk currentPressure minPressure
+slt temperatureMaxOk currentTemperature maxTemperature
+sgt temparatureMinOk currentTemperature minTemperature
+and filterWaste pressureOk temperatureMinOk
+and filterWaste filterWaste temperatureMaxOk
+sb filtrationUnits On filterWaste
+j start
